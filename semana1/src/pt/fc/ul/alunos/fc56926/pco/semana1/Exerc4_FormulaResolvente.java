@@ -15,15 +15,15 @@ package pt.fc.ul.alunos.fc56926.pco.semana1;
 
    Teste com valores críticos. Quais são eles? O que acontece?
  */
-public class Exerc4 {
+public class Exerc4_FormulaResolvente {
     public static void main(String[] args) {
         double a = 1;
         double b = -4;
         double c = 3;
 
         double raiz = Math.sqrt(b*b - 4*a*c);
-        double resMais = (-b + raiz) / 2*a;
-        double resMenos = (-b - raiz) / 2*a;
+        double resMais = (-b + raiz) / (2*a);
+        double resMenos = (-b - raiz) / (2*a);
 
         System.out.println(String.format("Resultados:\n%.5f\n%.5f", resMais, resMenos));
     }

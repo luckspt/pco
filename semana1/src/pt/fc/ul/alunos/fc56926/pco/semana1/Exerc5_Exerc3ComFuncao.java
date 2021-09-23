@@ -1,6 +1,6 @@
 package pt.fc.ul.alunos.fc56926.pco.semana1;
 
-public class Exerc5 {
+public class Exerc5_Exerc3ComFuncao {
     public static void main(String[] args) {
         // 1. Desenvolva um programa que:
         // declara e inicializa três variáveis representando um instante do dia, dado pelas horas, minutos e segundos;
@@ -31,14 +31,31 @@ public class Exerc5 {
         printSegundosPassados(totalSegundos);
     }
 
+    /**
+     * Calcula os segundos desde a meia-noite.
+     * @param horas Horas
+     * @param minutos Minutos
+     * @param segundos Segundos
+     * @return Segundos desde a meia-noite
+     */
     static int calcTotalSegundos(int horas, int minutos, int segundos) {
         return horas * 3600 + minutos * 60 + segundos;
     }
 
+    /**
+     * Imprime o instante do dia no ecra
+     * @param horas Horas
+     * @param minutos Minutos
+     * @param segundos Segundos
+     */
     static void printInstanteDia(int horas, int minutos, int segundos) {
         System.out.println("São " + horas + "h " + minutos + "m " + segundos + "s.");
     }
 
+    /**
+     * Imprime os segundos passados no ecra
+     * @param segundos Segundos desde a meia noite
+     */
     static void printSegundosPassados(int segundos) {
         System.out.println("Passaram " + segundos + " segundos desde a meia-noite");
     }

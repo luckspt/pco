@@ -1,5 +1,19 @@
 # PCO
 
+## Nomenclatura
+CaSe sENsiTiVe
+
+### Classes
+Começam com letra maiúscula (UpperCamelCase) e as conjunções de palavras também: `NomeDaClasse`.
+
+### Variáveis e Métodos
+Métodos começam com letra minúscula (camelCase) e as conjunções começam com letra maiúscula: `taxaImposto`.
+
+Podem começar por `$` ou `_` mas são usados em código de mais baixo nível.
+
+Não podem ser palavras reservadas: `if`, `break`, ...
+
+
 ## Comentários
 
 ```java
@@ -12,6 +26,14 @@
 /** 
   * Java doc
   */
+```
+
+### Documentação
+```java
+/**
+  * Descrição do método
+  * @param nomeParametro descrição do parametro
+  * @return Descrição do resultado da função (opcional. Para )
 ```
 
 ## Tipos de dados
@@ -198,4 +220,120 @@ if (expressao_booleana)
   se_verdadeiro;
 else
   se_falso;
+```
+
+```java
+// Função "complicada".
+static boolean ePar(int n) {
+  boolean result;
+  if (n % 2 == 0)
+    result = true;
+  else
+    retult = false;
+  
+  return result;
+}
+
+// Podemos não ter uma variável "result" e simplificar a função.
+static boolean ePar(int n) {
+  if (n % 2 == 0)
+    return true;
+  else
+    return false;
+}
+
+// Se o if avalia para true, vamos retornar true. Caso contrário, retorna false.
+// Podemos então simplificar para
+static boolean ePar(int n) {
+  return n % 2 == 0;
+}
+```
+
+### Comparação Números Reais
+
+```java
+double x = 10.1
+double r = x / 1.1;
+r = r * 1.1;
+
+// São exatamente iguais?
+if (r == x) // false
+  System.out.println("iguais!");
+else
+  System.out.println("diferentes!");
+```
+
+O resultado é "diferentes!" porque x = 10.1 e r = 10.099999999999998
+
+Isto acontece por causa da precisão.
+
+Uma solução é haver um threshold da diferença entre os dois.
+
+```java
+public static boolean iguais(double x, double y, double delta) {
+  return Math.abs(x - y) < delta;
+}
+
+iguais(x, r, 0.001); // true
+```
+
+### Switch
+If... else if... else if... vários desses
+```java
+switch (mes) {
+  case 1: System.out.println("Janeiro");
+  break;
+  case 2: System.out.println("Fevereiro");
+  break;
+  case 3: System.out.println("Marco");
+  break;
+  case 4: System.out.println("Abril");
+  break;
+  case 5: System.out.println("Maio");
+  break;
+  case 6: System.out.println("Junho");
+  break;
+  case 7: System.out.println("Julho");
+  break;
+  case 8: System.out.println("Agosto");
+  break;
+  case 9: System.out.println("Setembro");
+  break;
+  case 10: System.out.println("Outubro");
+  break;
+  case 11: System.out.println("Novembro");
+  break;
+  case 12: System.out.println("Dezembro");
+  break;
+  default: System.out.println("Valor inválido!");
+  break;
+}
+```
+O `break` faz com que o `case` acabe. Sem ele, podemos encadear cases e criar comportamento comulativo.
+
+O `default` é o caso executado quando nenhum dos casos anteriores é executado, como se fosse o último `else`.
+
+### Expressões condicionais (ternary)
+x = se n > 10 põe 1. se não põe 2
+=> `x = n > 10 ? 1 : 2;`
+
+Estas expressões necessitam obrigatoriamente dos dois valores. Não é como o `if` que pode não ter o `else`.
+```java
+int n = 10;
+int x;
+
+// If simples. Podemos fazer isto numa linha
+if (n > 10)
+  x = 1;
+else
+  x = 2;
+
+//  exp_bool ? valorTrue : valorFalse
+x = n > 10 ? 1 : 2;
+```
+
+Escrever o numero e se é Par ou Impar
+```java
+int n = 43;
+System.out.println(n + ePar(n) ? " e' Par" : "e' Impar");
 ```
