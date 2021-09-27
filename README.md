@@ -1,18 +1,20 @@
 # PCO
 
 ## Nomenclatura
+
 CaSe sENsiTiVe
 
 ### Classes
+
 Começam com letra maiúscula (UpperCamelCase) e as conjunções de palavras também: `NomeDaClasse`.
 
 ### Variáveis e Métodos
+
 Métodos começam com letra minúscula (camelCase) e as conjunções começam com letra maiúscula: `taxaImposto`.
 
 Podem começar por `$` ou `_` mas são usados em código de mais baixo nível.
 
 Não podem ser palavras reservadas: `if`, `break`, ...
-
 
 ## Comentários
 
@@ -29,6 +31,7 @@ Não podem ser palavras reservadas: `if`, `break`, ...
 ```
 
 ### Documentação
+
 ```java
 /**
   * Descrição do método
@@ -278,7 +281,9 @@ iguais(x, r, 0.001); // true
 ```
 
 ### Switch
+
 If... else if... else if... vários desses
+
 ```java
 switch (mes) {
   case 1: System.out.println("Janeiro");
@@ -309,15 +314,18 @@ switch (mes) {
   break;
 }
 ```
+
 O `break` faz com que o `case` acabe. Sem ele, podemos encadear cases e criar comportamento comulativo.
 
 O `default` é o caso executado quando nenhum dos casos anteriores é executado, como se fosse o último `else`.
 
 ### Expressões condicionais (ternary)
+
 x = se n > 10 põe 1. se não põe 2
 => `x = n > 10 ? 1 : 2;`
 
 Estas expressões necessitam obrigatoriamente dos dois valores. Não é como o `if` que pode não ter o `else`.
+
 ```java
 int n = 10;
 int x;
@@ -333,7 +341,123 @@ x = n > 10 ? 1 : 2;
 ```
 
 Escrever o numero e se é Par ou Impar
+
 ```java
 int n = 43;
 System.out.println(n + ePar(n) ? " e' Par" : "e' Impar");
+```
+
+## Ciclos
+
+### Atalhos
+
+- `var++`
+
+  ```java
+  int i = 5;
+  i++;  // i = i+1; ou i += 1
+  ```
+
+- `var--`
+
+  ```java
+  int j = 6;
+  j--; // j = j-1; ou j -= 1
+  ```
+
+- `var += valor`
+- `var -= valor`
+- `var *= valor`
+
+  ```java
+  i *= j + 7; // i = i * (j + 7)
+- `var /= valor`
+- `var %= valor`
+
+### For
+
+```java
+for (inicializacao; guarda; progresso)
+  bloco_instruções
+```
+
+As declarações de variáveis dentro do `for` (inclusive na inicialização) são limpas de memória quando o ciclo termina.
+
+A inicialização, guarda, e progresso são opcionais. Podemos ter ciclos sem inicialização (usam variáveis já definidas), sem guarda (usam `break;` para terminar o ciclo no bloco_instruções), e/ou sem progresso (pode ser feito no bloco_instruções).
+
+O progresso deve-se aproximar da falsificação da guarda.
+O seguinte ciclo é "infinito" (faz underflow) pois não se aproxima da falsificação da guarda - começa a 1 e vai diminuindo, logo não chega a 10.
+
+```java
+for (int i=1; i<=10; i--) {
+  System.out.println(i);
+}
+```
+
+Exemplos:
+
+- Imprime "la\n" 10 vezes
+  1. Inicializa i como inteiro com valor 1
+  2. Avalia a guarda. Se verdadeiro execucta o bloco. Cc acaba
+  3. Progresso
+  4. Voltar ao ponto 2.
+
+  ```java
+  for (int i=1; i<=10; i++)
+    System.out.println("la");
+  ```
+
+- Imprimir os números pares de 1 a 20
+
+  ```java
+  for (int i=1; i<=20; i++) {
+    if (i % 2 == 0)
+      System.out.println(i);
+  }
+  ```
+
+  Mas esta solução tem de fazer a pergunta "é par" a todas as iterações. Podemos ter antes:
+
+  ```java
+  for (int i=1; i<=10; i++) {
+    System.out.println(i * 2);
+  }
+  ```
+
+  Ou ter antes a seguinte solução para `i` ser sempre par no corpo do ciclo.
+
+  ```java
+  for (int i=2; i<=20; i+=2) {
+    System.out.println(i);
+  }
+  ```
+
+- Imprimir `n` asteriscos em 4 linhas
+
+```java
+int n = ?;
+for (int i=1; i<=4; i++) {
+  // Imprimir n asteriscos
+  
+  for (int j=1; j<=n; j++) {
+    System.out.print("*");
+  }
+
+  // Mudança de linha, se não os asteriscos ficam todos na mesma linha
+  System.out.print("\n");
+}
+```
+
+- Menor divisor de n que seja maior que um
+```java
+static int menorDivisorMaiorQueUm(int n) {
+  int resultado = n;
+  for (int i=2; i<=n/2 && resultado == n; i++) {
+    // Verificar se é divisor de n
+    if (n % i == 0)
+      resultado = i;
+  }
+
+  return resultado;
+}
 ```
