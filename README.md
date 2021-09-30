@@ -49,6 +49,7 @@ Tipos do Java. Não são classes.
 - double
 - float
 - boolean
+- char (definido como `'a'`)
 - ...
 
 Exemplos
@@ -75,11 +76,52 @@ Podem ser aplicados a numéricos o `>`, `<`, `>=`, `<=`, `==` e `!=` que retorna
 
 ### Não primitivos
 
-Classes criadas (por nós, por ex.)
+- Definidos por uma **Classe**.
+- Valores (instâncias da classe) são **objetos**.
+- Operações (tipo funções) são **métodos**.
+
+Exemplos de tipos não primitivos:
 
 - String
 - Aluno
   - objeto que tem nome, número, turma, ...
+
+#### String
+
+```java
+String s1 = "Tigre";
+```
+
+A variável `s1` não temo valor "Tigre" mas sim uma referência ao objeto que tem o conteúdo.
+
+```java
+String s2 = s1;
+```
+
+Como em java todos os objetos são referências, `s1` é uma referência. Quando atribuído ao `s2`, o valor da referência de `s1` é copiado para o `s2` e ficam ambos a apontar para o mesmo objeto em memória.
+
+### Métodos
+
+Os métodos não-estáticos chamam-se através de `nomeObjeto.nomeMétodo`
+Os métodos estáticos chamam-se através de `NomeClasse.nomeMétodo`
+
+```java
+String s1 = "Tigre";
+s1.charAt(0); //Caracter no índice 0. Valor: 'T'
+s1.charAt(5); //Atira uma exceção `IndexOutOfBoundsException` porque o índice 5 não existe na String s1
+s1.length(); //Comprimento da String. Valor: 5 
+
+String s2 = s1.toLowerCase(); // "Tigre" em minúsculas. Valor: "tigre"
+```
+
+### Comparação de Objetos
+
+```java
+Boolean iguais = s1 == s2; // false.
+```
+
+Porquê? `s1` e `s2` são objetos. Comparação entre eles são feitos pela referência.
+Para comparar `String`s teríamos de usar o método `String::equals`
 
 ## STDOUT
 
@@ -376,6 +418,8 @@ System.out.println(n + ePar(n) ? " e' Par" : "e' Impar");
 
 ### For
 
+Principalmente utilizado quando sabemos a quantidade de vezes que o ciclo itera.
+
 ```java
 for (inicializacao; guarda; progresso)
   bloco_instruções
@@ -449,6 +493,7 @@ for (int i=1; i<=4; i++) {
 ```
 
 - Menor divisor de n que seja maior que um
+
 ```java
 static int menorDivisorMaiorQueUm(int n) {
   int resultado = n;
@@ -461,3 +506,67 @@ static int menorDivisorMaiorQueUm(int n) {
   return resultado;
 }
 ```
+
+### While e Do...While
+
+Principalmente utilizado quando não sabemos a quantidade de vezes que o ciclo itera.
+
+- While
+
+  ```java
+  while (expressao_booleana) //Enquanto verdade faz "bloco_instrucoes"
+    bloco_instrucoes
+  ```
+
+  Exemplo:
+
+  ```java
+  static int algarismoEsq(int num) {
+    while (num >= 10)
+      num /= 10;
+    
+    return num;
+  }
+
+  algarismoEsq(123); // 1
+  ```
+
+  ```java
+  static int qtdAlgarismos(int num) {
+    int cnt = 1;
+    while (num >= 10) {
+      num /= 10;
+      cnt++;
+    }
+    
+    return cnt;
+  }
+
+  qtdAlgarismos(123); // 3
+  ```
+
+- Do...While
+  A diferença entre o `while` e o `do...while` é que o primeiro executa a guarda no início. O `do...while` executa no fim, portanto o corpo é executado pelo menos uma vez.
+
+  ```java
+  do {
+    bloco_instrucoes
+  } while (expressao);
+  ```
+
+  Exemplo:
+
+  ```java
+  static int qtdAlgarismos(int num) {
+    int cnt = 0;
+    do {
+      num /= 10;
+      cnt++;
+    }
+    while (num >= 10) {
+    
+    return cnt;
+  }
+
+  qtdAlgarismos(123); // 3
+  ```
