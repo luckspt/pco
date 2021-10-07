@@ -30,6 +30,12 @@
 - [Ciclos](#ciclos)
   - [Atalhos](#atalhos)
   - [While e Do...While](#while-e-dowhile)
+- [Arrays](#arrays)
+  - [Arrays Unidimensionais (Vetores)](#arrays-unidimensionais-vetores)
+  - [Arrays Multidimensionais](#arrays-multidimensionais)
+  - [Copiar Arrays](#copiar-arrays)
+  - [Afetar Arrays (em métodos)](#afetar-arrays-em-métodos)
+  - [Comparação de Arrays](#comparação-de-arrays)
 
 <!-- /TOC -->
 
@@ -603,3 +609,139 @@ Principalmente utilizado quando não sabemos a quantidade de vezes que o ciclo i
 
   qtdAlgarismos(123); // 3
   ```
+
+## Arrays
+
+Tipo não primitivo. Todos os elementos do *array* são do mesmo tipo.
+
+Os índices vão de `0` até `array::length - 1`
+
+### Arrays Unidimensionais (Vetores)
+
+Declaração:
+
+- `int[] vetor = new int[5]` (são inicializados 5 elementos a 0)
+- `int[] vetor = { 11, 7, 5, 8, 3 }` (são inicializados 5 elementos com os valores)
+
+Indexação:
+`vetor[indice]`
+
+No exemplo abaixo há uma cópia dos argumentos para os parâmetros. O valor de `myV` (uma referência) é copiado para ser usado pelo parâmetro `v`.
+No fundo, são as mesmas referências.
+
+```java
+public static void main() {
+  int[] myV = new int[5];
+  inprimeVetor(myV);
+}
+
+static void imprimeVetor(int[] v) {
+  for (int i=0; i<v.length; i++)
+    System.out.println(v[i]);
+}
+```
+
+TODO
+
+- Ver como se pode copiar de um array para o outro
+- Método que constroi e devolve um array
+
+### Arrays Multidimensionais
+
+`int[][] matriz = new int[5][3];`
+
+Indexação:
+`matriz[indice][indice]`
+
+```java
+public static void main() {
+  // int[][] notas = new int[5][3];
+  // ou
+  int[][] notas = { {15, 12, 20 }
+                  , {10, 3, 8}
+                  , { 5, 14, 18}
+                  , {10, 18, 16}
+                  , {13, 13, 14} };
+}
+```
+
+<img src="assets/images/ArraysMulti.png"
+     alt="Imagem Referencias"
+     style="width:50%;margin-left:25%;" />
+
+Exemplo de percorrer um array bidimensional
+
+```java
+void imprimeArrayBi(int[][] m) {
+  for(int i=0; i<m.length(); i++) {
+    for (int j=0; j<m[i].lenght(); j++) {
+      System.out.print(m[i][j] + " ");
+    }
+    System.out.println();
+  }
+}
+```
+
+### Copiar Arrays
+
+### Afetar Arrays (em métodos)
+
+É preciso prestar atenção quando se afetam *arrays* em métodos, pois são referênciados e, fora do método, as alterações são sentidas.
+
+<img src="assets/images/CriaImprimeArray3.jpg"
+     alt="Imagem Referencias"
+     style="width:50%;margin-left:25%;" />
+
+```java
+public static void main() {
+  int[] myV = new int[5];
+  // imaginar que existe código que atribui valores
+
+  // tornar todos os valores <10 igual a 10
+  alteraValoresInferiores(myV, 10);
+
+  // myV sente as alterações efetuadas no método alteraValoresInferiores
+}
+
+// Não precisa de retornar o array porque é afetado
+static void imprimeVetor(int[] v, int min) {
+  for (int i=0; i<v.length; i++) {
+    if (v[i] < min)
+      v[i] = min;
+  }
+}
+```
+
+### Comparação de Arrays
+
+`v1 == v2` NÃO deve ser feito, pois só compara as referências.
+Para comparar os valores, devemos percorrer os *arrays*:
+
+```java
+boolean saoIguais(int[] v1, int[] v2) {
+  // Só são iguais se o comprimento for igual. Sem isto, podemos ter erros de indexação
+  if (v1.length() != v2.length())
+    return false;
+
+  for (int i=0; i<v1.length(); i++)
+    if (v1[i] != v2[i]) // Só quando um elemento é diferente é que acabamos a função.
+      return false;
+  
+  // Se todos são iguais, retornamos true
+  return true;
+}
+
+// ou com extensão da guarda
+boolean saoIguais(int[] v1, int[] v2) {
+  // Só são iguais se o comprimento for igual. Sem isto, podemos ter erros de indexação
+  boolean iguais = v1.length() == v2.length();
+
+  // enquanto não chegar ao fim e forem iguais, percorre
+  for (int i=0; i<v1.length() && iguais; i++)
+    if (v1[i] != v2[i]) // Só quando um elemento é diferente é que acabamos a função.
+      iguais = false;
+  
+  // Se todos são iguais, retornamos true
+  return iguais;
+}
+```
