@@ -275,7 +275,14 @@ System.out.println (j); // esta. O `j` está definida no scope do if
     - dado um inteiro positivo `n`, calcular a soma dos dois números formados pela metade esquerda e pela metade direita dos algarismos de `n`. Se `n` tiver um número ímpar de algarismos, então será a metade esquerda que contará com mais um algarismo. *Exemplo*: a função `somaPartes` aplicada ao número `1234` terá `46` como resultado; quando aplicada ao número `8` terá `8` como resultado e quando aplicada ao número `123` terá `15` como resultado.
     ```java
     int somaPartes(int n) {
+        int length = digLength(n);
+        int metade = length / 2;
+        int metadeEsq = length % 2 == 0 ? metade : metade + 1;
         
+    }
+
+    int digLength(int n) {
+        return (int)(Math.log10(number) + 1);
     }
     ```
 
