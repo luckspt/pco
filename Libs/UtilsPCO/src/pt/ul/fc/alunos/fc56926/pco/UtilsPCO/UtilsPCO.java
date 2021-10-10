@@ -1,3 +1,4 @@
+package pt.ul.fc.alunos.fc56926.pco.UtilsPCO;
 public class UtilsPCO {
     public static void main(String[] args) {
         int[] v = { 11, 43, 64 };

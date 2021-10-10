@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="UtilsPCO">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../Libs/UtilsPCO" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../Libs/UtilsPCO/src" />
+    </SOURCES>
+  </library>
+</component>

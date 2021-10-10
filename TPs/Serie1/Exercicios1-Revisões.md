@@ -51,13 +51,36 @@ static double eurosToDollars(double valor) {
 14. Generalize o método do exercício anterior de modo a que a taxa de câmbio possa variar.
 
 ```java
-public static void main() {
+public static void main(String[] args) {
     double valor1 = 3.4;
     System.out.println(valor1 + " euros = " toDollars(valor1, 1.18) + "dolares");
 }
 
 static double toDollars(double valor, double taxaCambio) {
     return valor * taxaCambio;
+}
+```
+
+17. Escreva um método que, dado um número entre 100 e 999, calcule a sua "imagem ao espelho" (Ex: se invocado com o argumento 123, o método deve devolver 321).
+Construa um programa que invoque esse método e imprima no ecrã `"Imagem de <valor1> ao espelho é <valor2>"` para valor `valor1` escolhido por si.
+```java
+public static void main(String[] args) {
+    int num = 123;
+    int espelhado = espelhaInt(num);
+
+    System.out.println("Imagem de " + num + " ao espelho é " + espelhado);
+}
+
+static int espelhaInt(int num) {
+    int espelhado = num % 10; // 3
+    espelhado *= 10; // 30
+    espelhado += (num / 10) % 10; // 12 -> 2; espelhado=32
+    espelhado *= 10; // 320
+    espelhado += (num / 100) % 10; // 1 -> 1; espelhado=321.
+    // Não é preciso resto da div. por 10 mas fica mais percetível de ver o padrão.
+    // Dá para implementar em ciclo e incrementar a divisão do num
+
+    return espelhado;
 }
 ```
 
