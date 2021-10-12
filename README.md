@@ -9,10 +9,18 @@
   - [Primitivos](#primitivos)
     - [Boolean](#boolean)
   - [Não primitivos](#não-primitivos)
-    - [String](#string)
+- [Classes](#classes-1)
   - [Métodos](#métodos)
+  - [Funções](#funções)
+    - [Procedimentos](#procedimentos)
   - [Comparação de Objetos](#comparação-de-objetos)
-- [STDOUT](#stdout)
+  - [Algumas Classes](#algumas-classes)
+    - [String](#string)
+      - [StringBuilder](#stringbuilder)
+    - [Random](#random)
+- [IO](#io)
+  - [STDIN](#stdin)
+  - [STDOUT](#stdout)
 - [Precedências](#precedências)
 - [Declaração de variáveis](#declaração-de-variáveis)
 - [Operadores](#operadores)
@@ -20,15 +28,13 @@
     - [Concatenação](#concatenação)
   - [Divisão](#divisão)
   - [Quociente e Resto](#quociente-e-resto)
-- [Classes](#classes-1)
-  - [Métodos](#métodos-1)
-    - [Funções](#funções)
 - [Condicionais](#condicionais)
   - [Comparação Números Reais](#comparação-números-reais)
   - [Switch](#switch)
   - [Expressões condicionais (ternary)](#expressões-condicionais-ternary)
 - [Ciclos](#ciclos)
   - [Atalhos](#atalhos)
+    - [For-each](#for-each)
   - [While e Do...While](#while-e-dowhile)
 - [Arrays](#arrays)
   - [Arrays Unidimensionais (Vetores)](#arrays-unidimensionais-vetores)
@@ -36,6 +42,7 @@
   - [Copiar Arrays](#copiar-arrays)
   - [Afetar Arrays (em métodos)](#afetar-arrays-em-métodos)
   - [Comparação de Arrays](#comparação-de-arrays)
+- [Garbage Collector](#garbage-collector)
 
 <!-- /TOC -->
 
@@ -125,19 +132,7 @@ Exemplos de tipos não primitivos:
 - Aluno
   - objeto que tem nome, número, turma, ...
 
-#### String
-
-```java
-String s1 = "Tigre";
-```
-
-A variável `s1` não temo valor "Tigre" mas sim uma referência ao objeto que tem o conteúdo.
-
-```java
-String s2 = s1;
-```
-
-Como em java todos os objetos são referências, `s1` é uma referência. Quando atribuído ao `s2`, o valor da referência de `s1` é copiado para o `s2` e ficam ambos a apontar para o mesmo objeto em memória.
+## Classes
 
 ### Métodos
 
@@ -153,6 +148,51 @@ s1.length(); //Comprimento da String. Valor: 5
 String s2 = s1.toLowerCase(); // "Tigre" em minúsculas. Valor: "tigre"
 ```
 
+### Funções
+
+Processam e precisam de retornar algo.
+
+```java
+// tipo_retorno nome (tipo_parametro parametro, ...) { }
+
+/**
+  * Java doc
+  */
+static double media (int n1, int n2, int n3) {
+    // Corpo do método
+    return (n1 + n2 + n3) / 3;
+}
+```
+
+<hr/>
+
+Calcular nota final
+
+```java
+static void main() {
+  int nota = notaFinal(16.2, 18.3);
+}
+
+static int notaFinal (double exame, double trab) {
+  double nota = exame * 0.70 + trab * 0.30;
+  return (int)(nota + 0.5);
+}
+```
+
+#### Procedimentos
+
+Não retornam mas normalmente afetam o objeto.
+
+O tipo de retorno é `void`.
+
+```java
+static void imprimeTresLinhas() {
+  System.out.println("linha");
+  System.out.println("linha");
+  System.out.println("linha");
+}
+```
+
 ### Comparação de Objetos
 
 ```java
@@ -162,7 +202,105 @@ Boolean iguais = s1 == s2; // false.
 Porquê? `s1` e `s2` são objetos. Comparação entre eles são feitos pela referência.
 Para comparar `String`s teríamos de usar o método `String::equals`
 
-## STDOUT
+### Algumas Classes
+
+#### String
+
+```java
+String s1 = "Tigre";
+```
+
+A variável `s1` não temo valor "Tigre" mas sim uma referência ao objeto que tem o conteúdo.
+
+```java
+String s2 = s1;
+```
+
+Como em java todos os objetos são referências, `s1` é uma referência. Quando atribuído ao `s2`, o valor da referência de `s1` é copiado para o `s2` e ficam ambos a apontar para o mesmo objeto em memória.
+
+##### StringBuilder
+
+Executar o seguinte bloco de código cria um novo objeto a cada iteração. No fim, o valor da String será "blablablabla", mas a String é um objeto imutável.
+São criados 4 objetos para representar esta String, mas 3 são descartados.
+
+```java
+String s = "bla";
+int n = 3;
+for (int i=0; i<n; i++)
+  s += "bla";
+```
+
+Para resolver isto, pode-se usar a classe `StringBuilder` para não estar constantemente a criar novos objetos.
+
+```java
+StringBuilder sb = new StringBuilder();
+int n = 3;
+for (int i=0; i<n; i++)
+  sb.append("bla");
+
+String s = sb.toString();
+```
+
+Exemplos de métodos do `StringBuilder`
+
+```java
+StringBuilder sb = new StringBuilder("ola"); // ola
+sb.append(", bom dia"); // ola, bom dia
+sb.insert(3, " Maria"); // ola Maria, bom dia
+sb.setCharAt(0, "O"); //Ola Maria, bom dia
+sb.delete(3, 9); //Ola, bom dia
+```
+
+#### Random
+
+Gerar números aleatórios
+
+```java
+Random gerador = new Random();
+int nAleatorio = gerador.nextInt(16); // [0, 16[
+nAleatorio = gerador.nextInt(15) + 1; // [1, 15[ (no fundo [1, 14] )
+```
+
+Um objeto de `Random` necessita de uma semente. Se usar a mesma semente em dois objetos, a sucessão vai ser exatamente a mesma.
+
+Ao criar um `Random` sem semente os valores vão ser sempre diferentes.
+
+## IO
+
+### STDIN
+
+Exposto pelo `System.in`, mas irá usar-se a classe `Scanner` para trabalhar o *input*.
+
+```java
+Scanner leitor = new Scanner(System.in);
+StringBuilder sb = new StringBuilder();
+
+System.out.print("Insira o nome de aluno: "); // Escrever na consola para o utilizador
+sb.append(leitor.nextLine()); // Pede uma string ao utilizador
+sb.append("\n");
+
+System.out.print("Escreva a nota do exame de época normal: ");
+int e1 = leitor.nextInt(); // Pede um int ao utilizador
+System.out.print("Escreva a nota do exame de época de recurso: ");
+int e2 = leitor.nextInt();
+sb.append("Exame: ");
+sb.append(e1 > e2 ? e1 : e2);
+sb.append("\n");
+
+System.out.print("Escreva as 3 notas de dteste, separadas por espaço: ");
+double soma = 0;
+for (int i=0; i<3; i++) {
+  double nota = leitor.nextDouble();
+  soma += nota;
+}
+sb.append("Testes: ");
+sb.append(soma / 3);
+sb.append("\n");
+
+System.out.print(sb.toString());
+```
+
+### STDOUT
 
 Classe `System.out`.
 
@@ -235,54 +373,6 @@ w = x / 10.0; // w = 4.7. A divisão foi real.
 // x = 470
 (x / 10) * 10 //
 x % 10 //
-```
-
-## Classes
-
-### Métodos
-
-#### Funções
-
-Processam e precisam de retornar algo.
-
-```java
-// tipo_retorno nome (tipo_parametro parametro, ...) { }
-
-/**
-  * Java doc
-  */
-static double media (int n1, int n2, int n3) {
-    // Corpo do método
-    return (n1 + n2 + n3) / 3;
-}
-```
-
-<hr/>
-
-Calcular nota final
-
-```java
-static void main() {
-  int nota = notaFinal(16.2, 18.3);
-}
-
-static int notaFinal (double exame, double trab) {
-  double nota = exame * 0.70 + trab * 0.30;
-  return (int)(nota + 0.5);
-}
-
-#### Procedimentos
-
-Não retornam mas normalmente afetam o objeto.
-
-O tipo de retorno é `void`.
-
-```java
-static void imprimeTresLinhas() {
-  System.out.println("linha");
-  System.out.println("linha");
-  System.out.println("linha");
-}
 ```
 
 ## Condicionais
@@ -546,6 +636,48 @@ static int menorDivisorMaiorQueUm(int n) {
 }
 ```
 
+#### For-each
+
+`for (tipo valor : iterador)` (para `valor` em `iterador`)
+Percorre um iterador por ordem
+
+```java
+for (int e : v)
+  System.out.print(e + " ");
+System.out.println();
+```
+
+Seria equivalente a:
+
+```java
+for (int i=0; i<v.length; i++) {
+  int e = v[i];
+  System.out.print(e + " ");
+}
+System.out.println();
+```
+
+- Pode ser usado em *arrays* multidimensionais:
+
+```java
+// int[][] v
+for (int[] linha : v) {
+  for (int e : linha)
+    System.out.print(e + " ");
+}
+System.out.println();
+```
+
+Seria equivalente a:
+
+```java
+for (int i=0; i<v.length; i++) {
+  for (int j=0; j<v[i].length; j++)
+    System.out.print(v[i][j] + " ");
+}
+System.out.println();
+```
+
 ### While e Do...While
 
 Principalmente utilizado quando não sabemos a quantidade de vezes que o ciclo itera.
@@ -745,3 +877,7 @@ boolean saoIguais(int[] v1, int[] v2) {
   return iguais;
 }
 ```
+
+## Garbage Collector
+
+Trata de descartar os objetos que já não são referenciados.

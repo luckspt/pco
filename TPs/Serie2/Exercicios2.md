@@ -68,6 +68,7 @@ a) `boolean existe (int[] v, int x)` que verifica se existe alguma ocorrência d
 ```
 
 b) `int quantos (int[] v, int x)` que conta o número de ocorrências do valor `x` em `v`;
+
 ```java
     /**
      * Conta as ocorrências de x em v
@@ -89,6 +90,7 @@ b) `int quantos (int[] v, int x)` que conta o número de ocorrências do valor `
 c) `boolean iguais (int[] v, int[] w)` que verifica se os vetores v e w são iguais;
 
 d) `int[] junta (int[] v, int[] w)` que devolve um vetor contendo os elementos de `v` seguidos dos elementos de `w`;
+
 ```java
     /**
      * Concatena os vetores v com w
@@ -109,6 +111,7 @@ d) `int[] junta (int[] v, int[] w)` que devolve um vetor contendo os elementos d
 ```
 
 e) `int[] juntaOrdenado (int[] v, int[] w)` que recebe dois vetores ordenados de forma crescente, e devolve um vetor ordenado da mesma forma cujos elementos são todos os que pertencem a `v` ou `w`;
+
 ```java
     /**
      * Concatena dois vetores ordenados
@@ -137,6 +140,7 @@ e) `int[] juntaOrdenado (int[] v, int[] w)` que recebe dois vetores ordenados de
 ```
 
 k) `void imprimeVetor (int[] v)` que escreve no *standard output* os elementos do vetor `v` entre parenteses retos, separados por vírgulas.
+
 ```java
     /**
      * Imprime os valores de v, entre parêntesis retos, separados por vírgulas

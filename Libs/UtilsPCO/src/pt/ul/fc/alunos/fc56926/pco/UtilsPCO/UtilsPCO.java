@@ -1,11 +1,11 @@
 package pt.ul.fc.alunos.fc56926.pco.UtilsPCO;
 public class UtilsPCO {
-    public static void main(String[] args) {
-        int[] v = { 11, 43, 64 };
-
-        UtilsPCO.imprimeVetor( UtilsPCO.juntaOrdenado(v, v) );
-//        System.out.println(res);
-    }
+//    public static void main(String[] args) {
+//        int[] v = { 11, 43, 64 };
+//
+//        UtilsPCO.imprimeVetor( UtilsPCO.juntaOrdenado(v, v) );
+////        System.out.println(res);
+//    }
 
     /**
      * Se o inteiro x está presente no vetor v
