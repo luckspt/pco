@@ -83,6 +83,7 @@ Não podem ser palavras reservadas: `if`, `break`, ...
   * Descrição do método
   * @param nomeParametro descrição do parametro
   * @return Descrição do resultado da função (opcional. Para )
+  */
 ```
 
 ## Tipos de dados
@@ -264,6 +265,16 @@ nAleatorio = gerador.nextInt(15) + 1; // [1, 15[ (no fundo [1, 14] )
 Um objeto de `Random` necessita de uma semente. Se usar a mesma semente em dois objetos, a sucessão vai ser exatamente a mesma.
 
 Ao criar um `Random` sem semente os valores vão ser sempre diferentes.
+
+### Jogador
+```java
+public class Jogador {
+    // Atributos
+    private String nome;
+    private int pontuacao;
+    private int maxJogador;
+}
+```
 
 ## IO
 
