@@ -88,7 +88,21 @@ b) `int quantos (int[] v, int x)` que conta o número de ocorrências do valor `
 ```
 
 c) `boolean iguais (int[] v, int[] w)` que verifica se os vetores v e w são iguais;
-
+```java
+/**
+ * Compara se os vetores são iguais
+ * @param v Vetor a comparar
+ * @param w Vetor a comparar
+ * @return Se os vetores v e w são iguais
+ */
+public boolean iguais (int[] v, int[] w) {
+    boolean iguais = v.length == w.length;
+    for (int i=0; i<v.length && iguais; i++)
+        if (v[i] != w[i])
+            iguais = false;
+    return iguais;
+}
+```
 d) `int[] junta (int[] v, int[] w)` que devolve um vetor contendo os elementos de `v` seguidos dos elementos de `w`;
 
 ```java
@@ -98,7 +112,7 @@ d) `int[] junta (int[] v, int[] w)` que devolve um vetor contendo os elementos d
      * @param w Vetor a concatenar
      * @return Vetor concatenado de v com w
      */
-    static int[] junta (int[] v, int[] w) {
+    public static int[] junta (int[] v, int[] w) {
         int[] concatenado = new int[v.length + w.length];
         for (int i=0; i<v.length; i++)
             concatenado[i] = v[i];
@@ -154,4 +168,9 @@ k) `void imprimeVetor (int[] v)` que escreve no *standard output* os elementos d
                 System.out.print(", ");
         }
     }
+```
+
+20. Acrescente à classe UtilsPCO o método `static String melodia (String[] notas, int n)` que constrói e devolve uma *string* resultante de juntar aleatoriamente `n` *strings* do vetor notas separadas por pontos. Exemplo: se `notas` for `{"la", "mi", "sol"}` e `n` for `7`, um possível resultado será `"mi.mi.sol.la.mi.la.la"`. Use as classes `Random` e `StringBuilder`. Apresente também um cabeçalho *javadoc* apropriado.
+```java
+
 ```
