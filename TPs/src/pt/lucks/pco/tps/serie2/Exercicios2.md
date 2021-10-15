@@ -230,7 +230,76 @@ public static int[] maxMin (int[] v) {
 
 i) `int[] doisMaiores (int[] v)` que constrói e devolve um vetor de duas posições contendo os dois máximos do vetor `v`, assumindo que `v` tem pelo menos duas posições;
 
+```java
+/**
+ * Procura os dois maiores números de v
+ * @param v Vetor a procurar
+ * @return Dois maiores números do vetor por ordem crescente
+ */
+public static int[] doisMaiores (int[] v) {
+    int[] maiores = new int[] { v[0], v[1] };
 
+    for (int i=2; i<v.length; i++) {
+        if (maiores[0] > maiores[1])
+            UtilsPCO.inverte(maiores);
+
+        if (v[i] > maiores[0])
+            maiores[0] = v[i];
+        else if (v[i] > maiores[1])
+            maiores[1] = v[i];
+    }
+
+    // não fica muito bem aqui
+    if (maiores[0] > maiores[1])
+        UtilsPCO.inverte(maiores);
+
+    return maiores;
+}
+```
+
+j) `int[] pedeVetor (int n, Scanner sc)` que, assumindo que `n` é positivo e `sc` não é `null`, pede ao utilizador `n` valores inteiros e devolve um vetor com esses valores;
+
+```java
+/**
+ * Primeiro inteiro no canal de leitura
+ * @param errMess - mensagem a escrever no System.out caso o valor
+ *              acessivel no canal de leitura nao seja um inteiro
+ * @param sc - canal de leitura
+ * @return valor inteiro
+ * @requires errMess != null && sc != null
+ */
+public static int lerInteiro (String errMess, Scanner sc) {
+    int valor = 0;
+    boolean erro = true;
+    do {
+        if (sc.hasNextInt()) {
+            valor = sc.nextInt();  // consome o inteiro
+            erro = false;
+        } else {
+            sc.next(); // consome o que lah esteja
+            System.out.println(errMess);
+        }
+    } while (erro);
+
+    return valor;
+}
+
+/**
+ * Pede n inteiros
+ * @param n Quantidade de inteiros a pedir
+ * @param sc Scanner de onde ler os inteiros
+ * @return Inteiros recebidos
+ */
+public static int[] pedeVetor (int n, Scanner sc) {
+    int[] nums = new int[n];
+    System.out.printf("Insira %d:\n", n);
+
+    for (int i=0; i<n; i++)
+        nums[i] = lerInteiro("Formato de inteiro errado, tente novamente.", sc);
+
+    return nums;
+}
+```
 
 k) `void imprimeVetor (int[] v)` que escreve no *standard output* os elementos do vetor `v` entre parenteses retos, separados por vírgulas.
 
