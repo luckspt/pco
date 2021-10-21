@@ -10,6 +10,7 @@
     - [Boolean](#boolean)
   - [Não primitivos](#não-primitivos)
 - [Classes](#classes-1)
+  - [Construtores](#construtores)
   - [Métodos](#métodos)
   - [Funções](#funções)
     - [Procedimentos](#procedimentos)
@@ -18,6 +19,7 @@
     - [String](#string)
       - [StringBuilder](#stringbuilder)
     - [Random](#random)
+  - [Jogador](#jogador)
 - [IO](#io)
   - [STDIN](#stdin)
   - [STDOUT](#stdout)
@@ -89,6 +91,7 @@ Não podem ser palavras reservadas: `if`, `break`, ...
 ## Tipos de dados
 
 ### Primitivos
+Por defeito não são inicializados e atiram uma exceção por não estarem inicializados. 
 
 Tipos do Java. Não são classes.
 
@@ -122,6 +125,7 @@ Operações:
 Podem ser aplicados a numéricos o `>`, `<`, `>=`, `<=`, `==` e `!=` que retornam um `boolean`.
 
 ### Não primitivos
+Por defeito são inicializados a `null`.
 
 - Definidos por uma **Classe**.
 - Valores (instâncias da classe) são **objetos**.
@@ -135,21 +139,103 @@ Exemplos de tipos não primitivos:
 
 ## Classes
 
+### Construtores
+Invocados quando criamos um objeto `Jogador j = new Jogador()`.
+
+Internamente, o objeto refere-se a si próprio com o `this`.
+
+1. Reserva e afetação de memória para o novo objeto
+2. Inicialização atribui com valores por defeito
+3. Invocação no construtor indicado
+
+Os construtores podem ter parâmetros
+```java
+public class Jogador {
+  private Stringn nome; // null
+  private int pontuacao; // 0
+  private int maxJogada; // 0
+
+  
+
+  // Utilização
+  public void main(String[] args) {
+    Jogador j = new Jogador("Maria");
+    Jogador j2 = new Jogador("Elsa", 20, 8);
+  }
+}
+```
+
 ### Métodos
 
 Os métodos não-estáticos chamam-se através de `nomeObjeto.nomeMétodo`
 Os métodos estáticos chamam-se através de `NomeClasse.nomeMétodo`
 
 ```java
-String s1 = "Tigre";
-s1.charAt(0); //Caracter no índice 0. Valor: 'T'
-s1.charAt(5); //Atira uma exceção `IndexOutOfBoundsException` porque o índice 5 não existe na String s1
-s1.length(); //Comprimento da String. Valor: 5 
+public class Main {
+  public void main(String[] main) {
+    String s1 = "Tigre";
+    s1.charAt(0); //Caracter no índice 0. Valor: 'T'
+    s1.charAt(5); //Atira uma exceção `IndexOutOfBoundsException` porque o índice 5 não existe na String s1
+    s1.length(); //Comprimento da String. Valor: 5 
 
-String s2 = s1.toLowerCase(); // "Tigre" em minúsculas. Valor: "tigre"
+    String s2 = s1.toLowerCase(); // "Tigre" em minúsculas. Valor: "tigre"
+  }
+}
 ```
 
-### Funções
+#### Getters e Setters
+Uma boa prática é encapsular os atributos de uma classe. Por exemplo, o saldo de uma classe bancária não deve ser alterado pela classe cliente, apenas por levantamentos e depósitos.
+
+Para aceder em métodos internos, deve-se usar os getters e setters em vez das propriedades.
+
+Ver exemplo do `Jogador`
+
+#### Overrides Uteis
+##### toString
+Para representarmos um objeto sobre a forma de *string* necessitamos de fazer override ao método `toString`.
+
+Por exemplo:
+```java
+class Jogador { 
+    // ...
+    @Override
+    public String toString() {
+        return "Jogador{" +
+            "nome='" + this.getNome() + '\'' +
+            ", pontuacao=" + this.getPontuacao() +
+            ", maxJogador=" + this.getMaxJogada() +
+            '}';
+    }
+}
+```
+
+##### equals
+Para comparar dois objetos da mesma classe, porque se for feito com o `==` compara-se apenas as referências.
+
+Por exemplo:
+```java
+class Jogador {
+  @Override
+  public boolean equals(Jogador jogador) {
+    return this.getPontuacao() == jogador.getPontuacao()
+            && this.getMaxJogada() == jogador.getMaxJogada()
+            && this.getNome().equals(jogador.getNome());
+  }
+}
+```
+
+##### clone
+
+```java
+class Jogador {
+  public Jogador clone() {
+    // NOTA: como a string é imutável não é necessário clonar!
+    return new Jogador(this.getNome(), this.getPontuacao(), this.getMaxJogada());
+  }
+}
+```
+
+#### Funções
 
 Processam e precisam de retornar algo.
 
@@ -170,13 +256,15 @@ static double media (int n1, int n2, int n3) {
 Calcular nota final
 
 ```java
-static void main() {
-  int nota = notaFinal(16.2, 18.3);
-}
+class Main {
+  static void main(String[] args) {
+    int nota = notaFinal(16.2, 18.3);
+  }
 
-static int notaFinal (double exame, double trab) {
-  double nota = exame * 0.70 + trab * 0.30;
-  return (int)(nota + 0.5);
+  static int notaFinal(double exame, double trab) {
+    double nota = exame * 0.70 + trab * 0.30;
+    return (int) (nota + 0.5);
+  }
 }
 ```
 
@@ -196,9 +284,7 @@ static void imprimeTresLinhas() {
 
 ### Comparação de Objetos
 
-```java
-Boolean iguais = s1 == s2; // false.
-```
+`boolean iguais = s1 == s2;` retorna `false`.
 
 Porquê? `s1` e `s2` são objetos. Comparação entre eles são feitos pela referência.
 Para comparar `String`s teríamos de usar o método `String::equals`
@@ -207,15 +293,11 @@ Para comparar `String`s teríamos de usar o método `String::equals`
 
 #### String
 
-```java
-String s1 = "Tigre";
-```
+`String s1 = "Tigre";`
 
 A variável `s1` não temo valor "Tigre" mas sim uma referência ao objeto que tem o conteúdo.
 
-```java
-String s2 = s1;
-```
+`String s2 = s1;`
 
 Como em java todos os objetos são referências, `s1` é uma referência. Quando atribuído ao `s2`, o valor da referência de `s1` é copiado para o `s2` e ficam ambos a apontar para o mesmo objeto em memória.
 
@@ -267,12 +349,99 @@ Um objeto de `Random` necessita de uma semente. Se usar a mesma semente em dois 
 Ao criar um `Random` sem semente os valores vão ser sempre diferentes.
 
 ### Jogador
+
 ```java
 public class Jogador {
-    // Atributos
-    private String nome;
-    private int pontuacao;
-    private int maxJogador;
+  // Atributos
+  private String nome;
+  private int pontuacao;
+  private int maxJogada;
+
+  // region Construtores
+  public Jogador(String n) {
+    this.nome = n;
+
+    // Desnecessário, escreve 0 quando já é 0
+    this.pontuacao = 0;
+    this.maxJogada = 0;
+  }
+
+  public Jogador(String nome, int pontuacao, int maxJogada) {
+    this.nome = nome;
+    this.pontuacao = pontuacao;
+    this.maxJogada = maxJogada;
+  }
+  // endregion
+
+  // region Getters
+  public String getNome() {
+    return this.nome;
+  }
+
+  public int getMaxJogada() {
+    return this.maxJogada;
+  }
+
+  public int getPontuacao() {
+    return this.pontuacao;
+  }
+  // endregion
+
+  // region Setters
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public void adicionarPontuacao(int pontuacao) {
+    this.pontuacao = pontuacao;
+    if (this.maxJogada < pontuacao)
+      this.maxJogada = pontuacao;
+  }
+  // endregion
+
+  public Jogador clone() {
+    // NOTA: como a string é imutável não é necessário clonar!
+    return new Jogador(this.getNome(), this.getPontuacao(), this.getMaxJogada());
+  }
+  
+  @Override
+  public boolean equals(Jogador jogador) {
+    return this.getPontuacao() == jogador.getPontuacao()
+            && this.getMaxJogada() == jogador.getMaxJogada()
+            && this.getNome().equals(jogador.getNome());
+  }
+
+  @Override
+  public String toString() {
+    return "Jogador{" +
+            "nome='" + this.getNome() + '\'' +
+            ", pontuacao=" + this.getPontuacao() +
+            ", maxJogador=" + this.getMaxJogada() +
+            '}';
+  }
+}
+```
+
+### Jogo
+```java
+class Jogo {
+    private Jogador[] jogs;
+    private int objetivo;
+    private int quantos;
+    
+    public Jogo (int objetivo) {
+        this.objetivo = objetivo;
+        this.jogs = new Jogador[5]; // todas as posições do array são null
+    }
+    
+    public int getObjetivo() {
+        return this.objetivo
+    }
+    
+    public void juntaJogador(String nome) {
+        this.jogs[this.quantos] = new Jogador(nome);
+        this.quantos++;
+    }
 }
 ```
 
@@ -283,32 +452,37 @@ public class Jogador {
 Exposto pelo `System.in`, mas irá usar-se a classe `Scanner` para trabalhar o *input*.
 
 ```java
-Scanner leitor = new Scanner(System.in);
-StringBuilder sb = new StringBuilder();
+class Main {
+  public static void main(String[] args) {
 
-System.out.print("Insira o nome de aluno: "); // Escrever na consola para o utilizador
-sb.append(leitor.nextLine()); // Pede uma string ao utilizador
-sb.append("\n");
+    Scanner leitor = new Scanner(System.in);
+    StringBuilder sb = new StringBuilder();
 
-System.out.print("Escreva a nota do exame de época normal: ");
-int e1 = leitor.nextInt(); // Pede um int ao utilizador
-System.out.print("Escreva a nota do exame de época de recurso: ");
-int e2 = leitor.nextInt();
-sb.append("Exame: ");
-sb.append(e1 > e2 ? e1 : e2);
-sb.append("\n");
+    System.out.print("Insira o nome de aluno: "); // Escrever na consola para o utilizador
+    sb.append(leitor.nextLine()); // Pede uma string ao utilizador
+    sb.append("\n");
 
-System.out.print("Escreva as 3 notas de dteste, separadas por espaço: ");
-double soma = 0;
-for (int i=0; i<3; i++) {
-  double nota = leitor.nextDouble();
-  soma += nota;
+    System.out.print("Escreva a nota do exame de época normal: ");
+    int e1 = leitor.nextInt(); // Pede um int ao utilizador
+    System.out.print("Escreva a nota do exame de época de recurso: ");
+    int e2 = leitor.nextInt();
+    sb.append("Exame: ");
+    sb.append(e1 > e2 ? e1 : e2);
+    sb.append("\n");
+
+    System.out.print("Escreva as 3 notas de dteste, separadas por espaço: ");
+    double soma = 0;
+    for (int i = 0; i < 3; i++) {
+      double nota = leitor.nextDouble();
+      soma += nota;
+    }
+    sb.append("Testes: ");
+    sb.append(soma / 3);
+    sb.append("\n");
+
+    System.out.print(sb.toString());
+  }
 }
-sb.append("Testes: ");
-sb.append(soma / 3);
-sb.append("\n");
-
-System.out.print(sb.toString());
 ```
 
 ### STDOUT

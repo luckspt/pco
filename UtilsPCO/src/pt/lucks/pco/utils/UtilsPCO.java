@@ -1,25 +1,25 @@
 package pt.lucks.pco.utils;
 
-import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class UtilsPCO {
-    public static void main(String[] args) {
-        int[] v = new int[] {7,0,1,3,6,12};
-        Scanner sc = new Scanner(System.in);
-        UtilsPCO.imprimeVetor( UtilsPCO.pedeVetor(5, sc) );
+
+//    public static void main(String[] args) {
+//        int[] v = new int[] {7,0,1,3,6,12};
+//        Scanner sc = new Scanner(System.in);
+//        UtilsPCO.imprimeVetor( UtilsPCO.pedeVetorInteiro(5, sc) );
 //        System.out.println(res);
-    }
+//    }
 
     /**
      * Se o inteiro x está presente no vetor v
+     *
      * @param v Vetor a procurar
      * @param x Inteiro a encontrar
      * @return Se x está presente em v
      */
-    public static boolean existe (int[] v, int x) {
+    public static boolean existe(int[] v, int x) {
         for (int i=0; i<v.length; i++)
             if (v[i] == x)
                 return true;
@@ -201,29 +201,73 @@ public class UtilsPCO {
 
     /**
      * Pede n inteiros
-     * @param n Quantidade de inteiros a pedir
+     *
+     * @param n  Quantidade de inteiros a pedir
      * @param sc Scanner de onde ler os inteiros
      * @return Inteiros recebidos
      */
-    public static int[] pedeVetor (int n, Scanner sc) {
+    public static int[] pedeVetorInteiro(int n, Scanner sc) {
         int[] nums = new int[n];
-        System.out.printf("Insira %d:\n", n);
+        System.out.printf("Insira %d inteiros:\n", n);
 
-        for (int i=0; i<n; i++)
+        for (int i = 0; i < n; i++)
             nums[i] = lerInteiro("Formato de inteiro errado, tente novamente.", sc);
 
         return nums;
     }
 
     /**
+     * Primeiro real no canal de leitura
+     *
+     * @param errMess - mensagem a escrever no System.out caso o valor
+     *                acessivel no canal de leitura nao seja um real
+     * @param sc      - canal de leitura
+     * @return valor real
+     * @requires errMess != null && sc != null
+     */
+    public static double lerReal(String errMess, Scanner sc) {
+        double valor = 0;
+        boolean erro = true;
+        do {
+            if (sc.hasNextDouble()) {
+                valor = sc.nextDouble();  // consome o real
+                erro = false;
+            } else {
+                sc.next(); // consome o que lah esteja
+                System.out.println(errMess);
+            }
+        } while (erro);
+
+        return valor;
+    }
+
+    /**
+     * Pede n reais
+     *
+     * @param n  Quantidade de reais a pedir
+     * @param sc Scanner de onde ler os reais
+     * @return Reais recebidos
+     */
+    public static double[] pedeVetorReais(int n, Scanner sc) {
+        double[] nums = new double[n];
+        System.out.printf("Insira %d reais:\n", n);
+
+        for (int i = 0; i < n; i++)
+            nums[i] = lerReal("Formato de inteiro errado, tente novamente.", sc);
+
+        return nums;
+    }
+
+    /**
      * Compara se os vetores são iguais
+     *
      * @param v Vetor a comparar
      * @param w Vetor a comparar
      * @return Se os vetores v e w são iguais
      */
-    public boolean iguais (int[] v, int[] w) {
+    public boolean iguais(int[] v, int[] w) {
         boolean iguais = v.length == w.length;
-        for (int i=0; i<v.length && iguais; i++)
+        for (int i = 0; i < v.length && iguais; i++)
             if (v[i] != w[i])
                 iguais = false;
         return iguais;

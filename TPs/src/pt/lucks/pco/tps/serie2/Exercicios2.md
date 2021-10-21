@@ -260,44 +260,46 @@ public static int[] doisMaiores (int[] v) {
 j) `int[] pedeVetor (int n, Scanner sc)` que, assumindo que `n` é positivo e `sc` não é `null`, pede ao utilizador `n` valores inteiros e devolve um vetor com esses valores;
 
 ```java
-/**
- * Primeiro inteiro no canal de leitura
- * @param errMess - mensagem a escrever no System.out caso o valor
- *              acessivel no canal de leitura nao seja um inteiro
- * @param sc - canal de leitura
- * @return valor inteiro
- * @requires errMess != null && sc != null
- */
-public static int lerInteiro (String errMess, Scanner sc) {
+class Main {
+  /**
+   * Primeiro inteiro no canal de leitura
+   * @param errMess - mensagem a escrever no System.out caso o valor
+   *              acessivel no canal de leitura nao seja um inteiro
+   * @param sc - canal de leitura
+   * @return valor inteiro
+   * @requires errMess != null && sc != null
+   */
+  public static int lerInteiro(String errMess, Scanner sc) {
     int valor = 0;
     boolean erro = true;
     do {
-        if (sc.hasNextInt()) {
-            valor = sc.nextInt();  // consome o inteiro
-            erro = false;
-        } else {
-            sc.next(); // consome o que lah esteja
-            System.out.println(errMess);
-        }
+      if (sc.hasNextInt()) {
+        valor = sc.nextInt();  // consome o inteiro
+        erro = false;
+      } else {
+        sc.next(); // consome o que lah esteja
+        System.out.println(errMess);
+      }
     } while (erro);
 
     return valor;
-}
+  }
 
-/**
- * Pede n inteiros
- * @param n Quantidade de inteiros a pedir
- * @param sc Scanner de onde ler os inteiros
- * @return Inteiros recebidos
- */
-public static int[] pedeVetor (int n, Scanner sc) {
+  /**
+   * Pede n inteiros
+   * @param n Quantidade de inteiros a pedir
+   * @param sc Scanner de onde ler os inteiros
+   * @return Inteiros recebidos
+   */
+  public static int[] pedeVetor(int n, Scanner sc) {
     int[] nums = new int[n];
     System.out.printf("Insira %d:\n", n);
 
-    for (int i=0; i<n; i++)
-        nums[i] = lerInteiro("Formato de inteiro errado, tente novamente.", sc);
+    for (int i = 0; i < n; i++)
+      nums[i] = lerInteiro("Formato de inteiro errado, tente novamente.", sc);
 
     return nums;
+  }
 }
 ```
 
@@ -373,28 +375,31 @@ Caso `v` tenha valores fora do intervalo `0` a `top-1` (inclusive) estes não se
 Por exemplo, se o procedimento for chamado com o vetor `{0,-1,3,1,6,0,5,2,12,3,0}` e valor `top` `6`, então o resultado será `{3,1,1,2,0,1}`(zero tem três ocorrências, um e dois têm uma ocorrência cada, três tem duas ocorrências, quatro não tem ocorrências, cinco tem uma ocorrência).
 
 Assuma que o vetor a analisar não é vazio e que `top` é um valor positivo. Apresente também um cabeçalho *javadoc* apropriado.
+
 ```java
-/**
- * Conta as ocorrências dos valores [0, top[ em v
- * @param v Valores a contar as ocorrências
- * @param top Até que valor contar (exclusivo)
- * @return Ocorrências dos valores
- */
-public static int[] contaOcorrencias (int[] v, int top) {
+class Main {
+  /**
+   * Conta as ocorrências dos valores [0, top[ em v
+   * @param v Valores a contar as ocorrências
+   * @param top Até que valor contar (exclusivo)
+   * @return Ocorrências dos valores
+   */
+  public static int[] contaOcorrencias(int[] v, int top) {
     int[] ocorrencias = new int[top];
 
     for (int valor : v) {
-        if (valor >= 0 && valor < top)
-            ocorrencias[valor]++;
+      if (valor >= 0 && valor < top)
+        ocorrencias[valor]++;
     }
 
     return ocorrencias;
+  }
 }
 ```
 
-
-23. Acrescente à classe `UtilsPCO` o método `static String familia(String s, String[] v)` que constrói e devolve uma *string* resultante de juntar as *strings* do vetor `v` que contêm `s`, separadas por pontos.
-Exemplo: se `v` for `{"mareado", "longe", "Pai Natal", "amarelo", "rema"}` e `s` for `"mar"`, o resultado será `"mareado.amarelo"`.
+22. Acrescente à classe `UtilsPCO` o método `static String familia(String s, String[] v)` que constrói e devolve uma *
+    string* resultante de juntar as *strings* do vetor `v` que contêm `s`, separadas por pontos. Exemplo: se `v`
+    for `{"mareado", "longe", "Pai Natal", "amarelo", "rema"}` e `s` for `"mar"`, o resultado será `"mareado.amarelo"`.
 
 Apresente também um cabeçalho javadoc apropriado.
 
@@ -402,25 +407,94 @@ Use a classe `StringBuilder`.
 
 Use também o método `public int indexOf (String str)`, da classe `String`, que retorna a posição da primeira ocorrência de `str` na *string* alvo da invocação, ou -1 se `str` não ocorre.
 Exemplos: Se `String alvo = "OlaAdeus"`, então `alvo.indexOf("Ola")` retorna `0`, `alvo.indexOf("Adeus")` retorna `3` e `alvo.indexOf("ela")` retorna `-1`.
+
 ```java
-/**
- * Cria uma família com todas as strings presentes em v que contenham s
- * @param s String a conter
- * @param v Strings a adicionar à família
- * @return Strings da familia separadas por ponto
- */
-public static String familia(String s, String[] v) {
+class Main {
+  /**
+   * Cria uma família com todas as strings presentes em v que contenham s
+   * @param s String a conter
+   * @param v Strings a adicionar à família
+   * @return Strings da familia separadas por ponto
+   */
+  public static String familia(String s, String[] v) {
     StringBuilder familia = new StringBuilder();
 
-    for (int i=0; i<v.length; i++) {
-        if (v[i].indexOf(s) != -1) {
-            familia.append(v[i]);
+    for (int i = 0; i < v.length; i++) {
+      if (v[i].indexOf(s) != -1) {
+        familia.append(v[i]);
 
-            if (i != v.length-1)
-                familia.append(".");
-        }
+        if (i != v.length - 1)
+          familia.append(".");
+      }
     }
 
     return familia.toString();
+  }
 }
 ```
+
+23. Um array em que os seus elementos são arrays
+24. Os arrays interiores têm todos o mesmo tamanho
+25.
+
+a) `int` para ambos b) `m[0][0]` é do tipo `int`, `m[1]` é do tipo `int[]` e `m[5][3]` não existe (IndexOutOfBounds)
+
+31. Num contexto em que existem as declarações `double[][] notas` e `double[] pesos` e assumindo que:
+
+- na linha `i` de notas estão as notas do aluno n. `i` nas diferentes componentes de avaliação de uma disciplina (notas
+  parciais)
+- os elementos de `pesos`, tantos quantos o número de colunas da matriz de notas, representam os pesos de cada
+  componente na nota final (valores positivos que somam 1)
+  a) escreva um método que, dada uma matriz de notas e um vetor de pesos, devolve a média das notas finais;
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        double[][] notas = new double[][] {
+                new double[] { 7.3, 10.6, 4.6 },
+                new double[] { 19.4, 18.4, 18.5 } };
+        double[] pesos = new double[] { .5, .3, .2 };
+        
+        System.out.println(mediaNotas(notas, pesos));
+    }
+    
+    static double mediaNotas(double[][] notas, double[] pesos) {
+        double soma = 0;
+        int qtd = 0;
+        
+        for (double[] notasAluno : notas) {
+            for (int i=0; i<notasAluno.length; i++) {
+                soma += notasAluno[i] * pesos[i];
+                qtd++;
+            }
+        }
+        
+        return soma / qtd;
+    }
+}
+```
+
+b) escreva um método que, dada uma matriz de notas e um vetor de pesos, devolve um vetor com as notas finais dos alunos;
+
+```java
+class Main {
+    static double[] notasFinais(double[][] notas, double[] pesos) {
+      double[] notasFinais = new double[notas.length];
+        
+      for (int i=0; i<notas.length;i++) {
+        double soma = 0;
+        for (int j = 0; j < notas[i].length; j++)
+          soma += notas[i][j] * pesos[j];
+        
+        notasFinais[i] = soma / notas[i].length;
+      }
+      
+      return notasFinais;
+    }
+}
+```
+
+32. Escreva um programa Java que crie uma matriz de notas de alunos e um vetor de pesos e os preencha com valores dados
+    pelo utilizador. De seguida imprima um menu de opções que permita ao utilizador escolher as informações que deseja
+    obter (estas incluem todas as informações possíveis de obter com os métodos do exercício anterior). Para cada opção,
+    o programa deve invocar o método correspondente.
