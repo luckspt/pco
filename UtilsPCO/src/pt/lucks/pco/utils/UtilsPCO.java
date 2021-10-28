@@ -5,12 +5,12 @@ import java.util.Scanner;
 
 public class UtilsPCO {
 
-//    public static void main(String[] args) {
-//        int[] v = new int[] {7,0,1,3,6,12};
-//        Scanner sc = new Scanner(System.in);
-//        UtilsPCO.imprimeVetor( UtilsPCO.pedeVetorInteiro(5, sc) );
+    public static void main(String[] args) {
+        int[] v = new int[] {7,0,1,3,6,12};
+        Scanner sc = new Scanner(System.in);
+        UtilsPCO.imprimeVetor( UtilsPCO.pedeVetorInteiro(5, sc) );
 //        System.out.println(res);
-//    }
+    }
 
     /**
      * Se o inteiro x está presente no vetor v
@@ -24,6 +24,19 @@ public class UtilsPCO {
             if (v[i] == x)
                 return true;
         return false;
+    }
+
+    /**
+     * Se a String s contém todas as sub-Strings de v
+     * @param v Substrings a conter
+     * @param s String que deve conter as sub-Strings
+     * @return Se as substrings de v estão contidas em s
+     */
+    private static boolean contemTodas(String[] v, String s) {
+        for (String str : v)
+            if (!s.contains(str))
+                return false;
+        return true;
     }
 
     /**

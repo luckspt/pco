@@ -64,6 +64,8 @@ Podem começar por `$` ou `_` mas são usados em código de mais baixo nível.
 
 Não podem ser palavras reservadas: `if`, `break`, ...
 
+**Constantes** são definidas pela keyword `final` e são *UPPER_CASE*
+
 ## Comentários
 
 ```java
@@ -354,7 +356,7 @@ Ao criar um `Random` sem semente os valores vão ser sempre diferentes.
 public class Jogador {
   // Atributos
   private String nome;
-  private int pontuacao;
+  private int pontos;
   private int maxJogada;
 
   // region Construtores
@@ -362,13 +364,13 @@ public class Jogador {
     this.nome = n;
 
     // Desnecessário, escreve 0 quando já é 0
-    this.pontuacao = 0;
+    this.pontos = 0;
     this.maxJogada = 0;
   }
 
-  public Jogador(String nome, int pontuacao, int maxJogada) {
+  public Jogador(String nome, int pontos, int maxJogada) {
     this.nome = nome;
-    this.pontuacao = pontuacao;
+    this.pontos = pontos;
     this.maxJogada = maxJogada;
   }
   // endregion
@@ -382,7 +384,7 @@ public class Jogador {
     return this.maxJogada;
   }
 
-  public int getPontuacao() {
+  public int getPontos() {
     return this.pontuacao;
   }
   // endregion
@@ -392,21 +394,36 @@ public class Jogador {
     this.nome = nome;
   }
 
-  public void adicionarPontuacao(int pontuacao) {
-    this.pontuacao = pontuacao;
-    if (this.maxJogada < pontuacao)
-      this.maxJogada = pontuacao;
+  public void registarPontos(int pontos) {
+    this.pontos = pontos;
+    if (this.maxJogada < pontos)
+      this.maxJogada = pontos;
+  }
+
+  public void registarPontos(int pontos, EfeitoJogada efeito) {
+    int anterior = this.pontos;
+
+    switch(efeito) {
+      case ADICAO -> this.pontos += pontos;
+      case SUBTRACAO -> this.pontos -= pontos;
+      case SUBSTITUICAO -> this.pontos = pontos;
+      case RESET -> this.pontos = 0;
+    }
+
+    int aumento = this.pontos - anterior;
+    if (aumento > this.maxJogada)
+      this.maxJogada = aumento;
   }
   // endregion
 
   public Jogador clone() {
     // NOTA: como a string é imutável não é necessário clonar!
-    return new Jogador(this.getNome(), this.getPontuacao(), this.getMaxJogada());
+    return new Jogador(this.getNome(), this.getPontos(), this.getMaxJogada());
   }
-  
+
   @Override
   public boolean equals(Jogador jogador) {
-    return this.getPontuacao() == jogador.getPontuacao()
+    return this.getPontos() == jogador.getPontos()
             && this.getMaxJogada() == jogador.getMaxJogada()
             && this.getNome().equals(jogador.getNome());
   }
@@ -415,7 +432,7 @@ public class Jogador {
   public String toString() {
     return "Jogador{" +
             "nome='" + this.getNome() + '\'' +
-            ", pontuacao=" + this.getPontuacao() +
+            ", pontuacao=" + this.getPontos() +
             ", maxJogador=" + this.getMaxJogada() +
             '}';
   }
@@ -424,23 +441,136 @@ public class Jogador {
 
 ### Jogo
 ```java
-class Jogo {
+public class Jogo {
+    public static final int MAX_JOGADORES = 5; // final é constante
+    public static final int MAX_PONTOS_JOGADA = 10; // final é constante
+            
     private Jogador[] jogs;
+    private int qtdJogadores;
     private int objetivo;
-    private int quantos;
     
     public Jogo (int objetivo) {
         this.objetivo = objetivo;
-        this.jogs = new Jogador[5]; // todas as posições do array são null
+        this.jogs = new Jogador[MAX_JOGADORES]; // todas as posições do array são null
+    }
+
+  /**
+   *
+   * @param objetivo
+   * @param nomes
+   * @requires objetivo > 0 && dadosValidos(nomes)
+   */
+  public Jogo(int objetivo, String[] nomes) {
+        this.objetivo = objetivo;
+        this.jogs = new Jogador[MAX_JOGADORES];
+        for (int i=0; i<nomes.length; i++)
+            this.jogs[i] = new Jogador(nomes[i]);
+        this.qtdJogadores = nomes.length;
+    }
+    
+    public static boolean dadosValidos(String[] v) {
+      boolean result = v != null && v.length > 0 && v.length <= MAX_JOGADORES;
+      
+      for (int i=0; result && i<v.length; i++) {
+          String nome = v[i];
+          result = nome != null;
+          for (int j = i+1; result && j<v.length; j++) {
+              if (nome.equals(v[j]))
+                  result = false;
+          }
+      }
+      
+      return result;
     }
     
     public int getObjetivo() {
-        return this.objetivo
+        return this.objetivo;
+    }
+
+    /**
+     * ...
+     * @param nome Nome do jogador
+     * @requires qtdJogadores < MAX_JOGADORES
+     */
+    public void registarJogador(String nome) {
+        this.jogs[this.qtdJogadores] = new Jogador(nome);
+        this.qtdJogadores++;
+    }
+
+  /**
+   * Obtém um jogador
+   * @param nome Nome do jogador
+   * @requires o nome já está registado no jogo
+   * @return Jogador
+   */
+  private Jogador getJogador(String nome) {
+        Jogador j = null;
+        for (int i=0; i<this.qtdJogadores && j == null; i++) {
+            if (nome.equals(this.jogs[i].getNome())) {
+                j = this.jogs[i];
+            }
+        }
+        return j;
     }
     
-    public void juntaJogador(String nome) {
-        this.jogs[this.quantos] = new Jogador(nome);
-        this.quantos++;
+    public boolean emJogo(String nome) {
+      return this.getJogador() != null;
+    }
+
+    /**
+    * Adicionar pontos a um jogador
+    * @requires emJogo(nome) && pontos >= 0 && pontos <= 10
+    */
+    public void registarPontosJogada(String nome, int pontos) {
+        this.getJogador(nome).registarPontos(pontos);
+    }
+
+    public void registarPontosJogada(String nome, int pontos, EfeitoJogada efeito) {
+      this.getJogador(nome).registarPontos(pontos, efeito);
+    }
+
+    /**
+     * Ver os pontos de um jogador
+     * @requires emJogo(nome)
+     */
+    public int pontosJogador(String nome) {
+        return this.getJogador(nome).getPontos();
+    }
+}
+```
+
+
+## Enums
+Quantidade finita de valores de um tipo
+
+```java
+// EfeitoJogada.java
+public enum EfeitoJogada {
+    //           ordinal()   name()
+    ADICAO,         // 0    "ADICAO" 
+    SUBTRACAO,      // 1    "SUBTRACAO"
+    SUBSTITUICAO,   // 2    "SUBSTITUICAO"
+    RESET           // 3    "RESET"
+}
+
+// Exemplo de uso do método static values()
+class Main() {
+    public static void main(String[] args) {
+        Scanner leitor = new Scanner(System.in);
+        
+        Jogo meuJ = new Jogo();
+        EfeitoJogada[] efeitos = EfeitoJogada.values();
+        
+        System.out.println("Escolha uma opção entre 1 e " + efeitos.length);
+        for (EfeitoJogada e : efeitos)
+            System.out.println(e.ordinal() + 1 + " - " + e.name()); // 1 ADICAO .....
+      
+        int opcao = leitor.nextInt();
+        int pontos = leitor.nextInt();
+        String nome = leitor.nextLine();
+        
+        meuJ.registarJogador(nome);
+        meuJ.registarPontosJogada(nome, pontos, efeitos[opcao-1]); // opcao não é validada, mas confiamos que seja entre [1, efeitos.length] 
     }
 }
 ```
@@ -493,9 +623,13 @@ Classe `System.out`.
 `System.out.print` escreve na consola sem `\n`
 
 ```java
-// 250 + 120 = 370
-System.out.print("250 + 120"); // imprime o texto
-System.out.println(250 + 120); // imprime o resultado e muda de linha
+class Main() {
+  public static void main(String[] args) {
+    // 250 + 120 = 370
+    System.out.print("250 + 120"); // imprime o texto
+    System.out.println(250 + 120); // imprime o resultado e muda de linha
+  }
+}
 ```
 
 ## Precedências
