@@ -169,8 +169,9 @@ public class Polygon {
         for (int i = 0; result && i < v.length; i++) {
             if (v[i] == null)
                 result = false;
-            
+
             int idx = (i + j + 1) % v.length;
+        }
     }
 }
 ```
