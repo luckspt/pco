@@ -61,8 +61,8 @@ public class LigaDeHerois {
         List<String> result = new ArrayList();
         for (SuperHeroi sh : this.herois) {
             boolean valido = sh.estahDisponivel();
-            for (int i=0; valido && i<Poder.values().length; i++) {
-                if (!sh.temPoder(Poder.values()[i])) {
+            for (int i=0; valido && i<poderes.length; i++) {
+                if (!sh.temPoder(poderes[i])) {
                     valido = false;
                     break;
                 }
