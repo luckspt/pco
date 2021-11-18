@@ -156,27 +156,126 @@ public class AdegaEspecial extends Adega {
 
 - a) Apresente um diagrama UML que capture a estrutura dessas classes e a forma como se relacionam.
 ```mermaid
-flowchart LR;
-  AdegaEspecial --> Adega
+classDiagram
+  Adega <|-- AdegaEspecial
+  
+  class Adega {
+    -int[] quantidades
+    +quantidade(int nCuba) int
+    +acrescenta(int nCuba, int litros) void
+    +totalCubas() int
+  }
+  
+  class AdegaEspecial {
+    +acrescentaACada(int[] litros) void
+  }
 ```
+[Mermaid (gráfico)](https://mermaid-js.github.io/mermaid/#/./classDiagram)
 
 - b) Diga, justificando, se as seguintes instruções são aceites pelo compilador.
-  1. `int[] v = {25, 12, 30, 22, 60, 55};` 
-  2. `Adega a1 = new Adega(6);`
-  3. `AdegaEspecial ea1 = new AdegaEspecial (4);`
-  4. `Adega a2 = new AdegaEspecial (7);`
-  5. `AdegaEspecial ea2 = new Adega (3);`
-  6. `ea1.acrescenta(1,25);`
-  7. `ea1. acrescentaACada(v);`
-  8. `a2.acrescenta(3,10);`
-  9. `a1.acrescentaACada(v);`
-  10. `a2. acrescentaACada(v);`
-  11. `a2 = ea1;`
-  12. `ea1 = a2;`
-  13. `int x = a1.quantidade(1);`
-  14. `x = a2.quantidade(1);`
-  15. `x = ea1. quantidade(1);`
-  16. `a1.acrescenta(3,-10);`
+  0. `int[] v = {25, 12, 30, 22, 60, 55};` sim
+  1. `Adega a1 = new Adega(6);` sim
+  2. `AdegaEspecial ea1 = new AdegaEspecial(4);` sim
+  3. `Adega a2 = new AdegaEspecial(7);` sim
+  4. `AdegaEspecial ea2 = new Adega(3);` não, `Adega` não é compatível com `AdegaEspecial`
+  5. `ea1.acrescenta(1,25);` sim
+  6. `ea1. acrescentaACada(v);` sim
+  7. `a2.acrescenta(3,10);` sim
+  8. `a1.acrescentaACada(v);` não, `Adega` não tem o método `acrescentaACada`
+  9. `a2.acrescentaACada(v);` não, `Adega` não tem o método `acrescentaACada`
+  10. `a2 = ea1;` sim
+  11. `ea1 = a2;` não, `Adega` não é compatível com `AdegaEspecial`
+  12. `int x = a1.quantidade(1);` sim
+  13. `x = a2.quantidade(1);` sim
+  14. `x = ea1.quantidade(1);` sim
+  15. `a1.acrescenta(3,-10);` sim
+
 - c) Contando somente com as instruções corretas, represente o estado do sistema à medida que as instruções são
   executadas.
 - d) Que métodos podem ser invocados sobre `a1`, `ea1` e `a2`? Justifique.
+Sobre `a1` e `a2` podem ser invocados os métodos públicos da classe `Adega` que incluem todos os métodos de `Object`
+Sobre `ea1` podem ser invocados os métodos públicos da classe `AdegaEspecializada` que incluem todos os métodos públicos da classe `Adega`
+
+5. Considere de novo a classe Adega definida no exercício 4
+- a) Fazendo uso da herança, crie uma classe que represente uma adega comunitária (ver API) em que quando se acrescenta vinho a uma cuba, se o resultado de adicionar essa nova quantidade à quantidade já existente nessa cuba for superior à quantidade máxima existente nalguma cuba da adega, a quantidade a acrescentar deverá ser distribuída por todas as cubas da adega.
+
+```java
+public class Adega {
+  private int[] quantidades;
+
+  /**
+   * Inicializa o novo objeto
+   * @param nCubas O numero de cubas que a nova adega vai ter
+   * @requires nCubas > 0
+   */
+  public Adega(int nCubas) {
+    this.quantidades = new int[nCubas];
+  }
+
+  /**
+   * Quantidade de líquido numa dada cuba
+   * @param nCuba Numero de ordem da cuba
+   * @return Quantidade de líquido na cuba numero nCuba
+   * @requires nCuba >= 0 && nCuba < this.totalCubas()
+   */
+  public int quantidade(int nCuba) {
+    return this.quantidades[nCuba];
+  }
+
+  /**
+   * Acrescenta liquido a uma dada cuba
+   * @param nCuba Numero de ordem da cuba
+   * @param litros Numero de litros a acrescentar
+   * @requires nCuba >= 0 && nCuba < this.totalCubas() && litros > 0
+   */
+  public void acrescenta(int nCuba, int litros) {
+    this.quantidades[nCuba] += litros;
+  }
+
+  /**
+   * Quantas cubas tem a adega?
+   * @return
+   */
+  public int totalCubas() {
+    return this.quantidades.length;
+  }
+}
+
+public class EcoAdega extends Adega {
+  public EcoAdega(int nCubas) {
+    super(nCubas);
+  }
+  
+  private int maxLitrosCubas() {
+    int qtdCubas = this.totalCubas();
+    int max = this.quantidade(0);
+
+    for (int i=0; i<qtdCubas; i++) {
+      int qtd = this.quantidade(i);
+      if (qtd > max)
+        max = qtd;
+    }
+    
+    return max;
+  }
+
+  /**
+   * 
+   * @param nCuba Numero de ordem da cuba
+   * @param litros Numero de litros a acrescentar
+   * @requires nCuba >= 0 && nCuba < this.totalCubas() && litros > 0
+   */
+  @Override
+  public void acrescenta(int nCuba, int litros) {
+    int qtdCubas = this.totalCubas();
+      
+    if (this.quantidade(nCuba) + litros > this.maxLitrosCubas()) {
+      int nLitros = litros / qtdCubas;
+      
+      for (int i=0; i<qtdCubas; i++)
+          super.acrescenta(i, nLitros);
+    } else
+        super.acrescenta(nCuba, litros);
+  }
+}
+```
