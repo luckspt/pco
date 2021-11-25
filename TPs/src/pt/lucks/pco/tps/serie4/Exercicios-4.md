@@ -279,3 +279,114 @@ public class EcoAdega extends Adega {
   }
 }
 ```
+
+7. Considere as classes `Adega` e `AdegaEspecial` definidas anteriormente e a classe:
+```java
+public class AdegaPlus extends AdegaEspecial {
+  private int nRecargas;
+  
+  /**
+  * Inicializa o novo objeto
+  * @param nCubas O numero de cubas que a nova adega vai ter
+  * @requires nCubas > 0
+  */
+  public AdegaPlus (int nCubas) {
+      super(nCubas);
+  }
+  
+  /**
+  * Acrescenta liquido a uma dada cuba ou uma parte desse liquido
+  * a todas as cubas no caso de, com esse liquido extra, essa cuba
+  * se tornar a cuba com maior quantidade
+  * @param nCuba Numero de ordem da cuba 'a qual acrescentar
+  * @param litros Numero de litros a acrescentar
+  * @requires nCuba >= 0 && nCuba < this.totalCubas() && litros > 0
+  */
+  @Override
+  public void acrescenta(int nCuba, int litros) {
+      super.acrescenta(nCuba, litros);
+      this.nRecargas++;
+  }
+  
+  /**
+  * Quantas recargas ja' foram feitas nesta adega
+  */
+  public int quantasRecargas() {
+      return this.nRecargas;
+  }
+}
+```
+
+- b) Qual é o resultado produzido pelo seguinte pedaço de código? Justifique, descrevendo as instruções que vão sendo executadas e o estado dos objetos.
+  - `quantidades: null; nRecargas: 0`
+  1. `AdegaPlus ap = new AdegaPlus(6);`
+     - `quantidades: [0, 0, 0, 0, 0, 0]; nRecargas: 0`
+  2. `ap.acrescenta(2, 25);`
+     - `quantidades: [0, 0, 25, 0, 0, 0]; nRecargas: 1` 
+  3. `int[] v = {25, 12, 30, 22, 60, 55};`
+     - ...
+  4. `ap.acrescentaACada(v);`
+     - `quantidades: [25, 12, 55, 22, 60, 55]; nRecargas: 7` 
+  5. `System.out.println(ap.quantasRecargas());`
+     - Imprime no ecrã o valor de `nRecargas` que é `1`
+  
+9. Considere as seguintes classes:
+```java
+public class Person {
+    private String name, surname;
+    
+    public void setFirstname(String n) {
+        this.name = n;
+    }
+    
+    public void setSurname(String n) {
+        this.surname = n;
+    }
+    
+    public String getFirstname() {
+        return this.name;
+    }
+    
+    public String getSurname() {
+        return this.surname;
+    }
+    
+    public String getName() {
+        return getFirstname() + " " + getSurname();
+    }
+    
+    public String toString() {
+        return "My name is " + getName();
+    }
+}
+
+public class Agent extends Person {
+  public String getFirstname() {
+    return "";
+  }
+}
+```
+
+- a) Apresente o “output” produzido pela seguinte sequência de comandos:
+  1. `Agent a = new Agent();`
+     - `name: null; surname: null` 
+  2. `a.setSurname("Bond");`
+     - `name: null; surname: "Bond"`
+  3. `a.setFirstname("Jaime");`
+     - `name: "Jaime"; surname: "Bond"`
+  4. `System.out.println(a.toString());`
+     - `"My name is  Bond"`
+- b) Altere a classe `Agent`, sem remover nem alterar o método `getFirstname` que aí se encontra implementado, por forma a que o “output” da sequência de instruções apresentada na alínea anterior seja `"My name is Bond, Jaime Bond"`.
+
+```java
+public class Agent extends Person {
+  @Override
+  public String toString() {
+    return "My name is " + getLastName() + ", " + super.getName();
+  }
+
+  public String getFirstname() {
+    return "";
+  }
+}
+  ```
