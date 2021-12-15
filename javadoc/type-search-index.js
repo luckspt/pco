@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"pt.lucks.pco.tps.serie6.ex2","l":"Color"},{"p":"pt.lucks.pco.tps.serie6.ex2","l":"ColoredRectangle"},{"p":"pt.lucks.pco.tps.serie6.ex2","l":"Rectangle"}];updateSearchResults();

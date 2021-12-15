@@ -1,4 +1,4 @@
-package pt.lucks.pco.tps.serie5.ex1;
+package pt.lucks.pco.tps.serie6.ex1;
 
 public class DefaultStrategy implements RankingStrategy {
     @Override
@@ -16,4 +16,5 @@ public class DefaultStrategy implements RankingStrategy {
         int grade = this.grade(cont, cand);
         return grade >= cont.minGrade() && grade <= cont.maxGrade();
     }
+
 }

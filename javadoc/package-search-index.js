@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"pt.lucks.pco.tps.serie6.ex2"}];updateSearchResults();

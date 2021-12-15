@@ -1,4 +1,4 @@
-package pt.lucks.pco.tps.serie5.ex1;
+package pt.lucks.pco.tps.serie6.ex1;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,8 @@ public class MyKindOfContest extends Contest {
 
     @Override
     public boolean isEligible(String candidate) {
-        return this.contestEvaluation(candidate) >= this.maxGrade() - 1;
+        return super.isEligible(candidate)
+                && this.contestEvaluation(candidate) >= this.maxGrade() - 1;
     }
 
     @Override

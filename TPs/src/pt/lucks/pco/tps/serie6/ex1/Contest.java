@@ -1,4 +1,4 @@
-package pt.lucks.pco.tps.serie5.ex1;
+package pt.lucks.pco.tps.serie6.ex1;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -73,10 +73,23 @@ public abstract class Contest implements IContest {
         return this.candidates.get(nome).grade(c);
     }
 
-    public Contest clone() {
-        Contest c = new Contest(this.dayLimit, this.minGrade(), this.maxGrade());
+//    public Contest clone() {
+//        Contest c = new Contest(this.dayLimit, this.minGrade(), this.maxGrade());
+//    }
+
+    public boolean isEligible(String candidate) {
+        Criterio[] criterios = Criterio.values();
+        boolean valid = true;
+
+        for (int i=0; valid && i<criterios.length; i++) {
+            int grade = this.grade(candidate, criterios[i]);
+
+            if (grade < this.minGrade() || grade > this.maxGrade())
+                valid = false;
+        }
+
+        return valid;
     }
 
-    public abstract boolean isEligible(String candidate);
     public abstract int contestEvaluation(String candidate);
 }
